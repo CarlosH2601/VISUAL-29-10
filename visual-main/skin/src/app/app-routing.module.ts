@@ -49,6 +49,12 @@ const routes: Routes = [
     loadChildren: () => import('./crear/crear.module').then( m => m.CrearPageModule),
     canActivate:[IngresadoGuard]
   },
+  {
+    path: 'rcontra',
+    loadChildren: () => import('./rcontra/rcontra.module').then( m => m.RcontraPageModule),
+    canActivate: [NoIngresadoGuard]
+  },
+
 ];
 
 @NgModule({
@@ -58,3 +64,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+  

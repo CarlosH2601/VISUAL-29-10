@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-para-ti',
@@ -7,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./para-ti.page.scss'],
 })
 export class ParaTiPage implements OnInit {
+  nombreUsuario: string = '';
 
-  constructor() { }
+  constructor(public alertController: AlertController) {
+   }
 
   ngOnInit() {
   }
-
 }

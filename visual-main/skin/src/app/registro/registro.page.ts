@@ -12,10 +12,9 @@ import { AlertController } from '@ionic/angular';
   selector: 'app-registro',
   templateUrl: './registro.page.html',
   styleUrls: ['./registro.page.scss'],
-})
-export class RegistroPage implements OnInit {
-
- 
+})  
+  export class RegistroPage implements OnInit{
+    nuevoUsuario: { nombre: string, password: string,email: string, confirmacionPassword: string } = { nombre: '', password: '' ,email:'',confirmacionPassword:''};
 
   formularioRegistro:FormGroup;
   constructor(public fb: FormBuilder, public alertContrller:AlertController, public router: Router){
@@ -31,29 +30,55 @@ export class RegistroPage implements OnInit {
   ngOnInit() {
   }
 
-async registro(){
-  var f=this.formularioRegistro.value
-  if(this.formularioRegistro.invalid){
-    const alert=await this.alertContrller.create({
-      header: "¡Aviso!",
-      message:"Debes llenar todos los campos",
-      buttons: ["ok"]
-    })
-    await alert.present();
-  }else{
-    var usuario={
-      usuario:f.nombre,
-      password:f.password
+  async agregarUsuario() {
+    var f = this.formularioRegistro.value;
+  
+    if (this.formularioRegistro.invalid) {
+      const alert = await this.alertContrller.create({
+        header: "Validación del formulario",
+        message: "Debes llenar todos los campos",
+        buttons: ["OK"]
+      });
+      await alert.present();
+    } else {
+      // Obtener usuarios existentes del localStorage o inicializar un array vacío
+      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+  
+      // Verificar si ya existe un usuario con el mismo nombre
+      const usuarioExistente = usuarios.find((usuario: any) => usuario.nombre === f.nombre);
+  
+      if (usuarioExistente) {
+        const alert = await this.alertContrller.create({
+          header: "Error",
+          message: "Ya existe un usuario con este nombre",
+          buttons: ["OK"]
+        });
+  
+        await alert.present();
+      } else {
+        // Si no existe un usuario con el mismo nombre, agrega el nuevo usuario
+        var nuevoUsuario = {
+          nombre: f.nombre,
+          email: f.email,
+          password: f.password,
+          confirmacionPassword: f.confirmacionPassword
+        };
+  
+        // Agregar el nuevo usuario al array
+        usuarios.push(nuevoUsuario);
+  
+        // Guardar el array actualizado en el localStorage
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+  
+        const alert = await this.alertContrller.create({
+          header: "Usuario",
+          message: "Usuario creado correctamente",
+          buttons: ["OK"]
+        });
+  
+        await alert.present();
+        this.router.navigate(["/login"]);
+      }
     }
-    localStorage.setItem('usuario', JSON.stringify(usuario));
-    const alert=await this.alertContrller.create({
-      header: "usuario",
-      message:"Usuario creado correctamente",
-      buttons: ["ok"]
-    })
-    await alert.present();
-    this.router.navigate(["/login"]);
   }
-}
-
-}
+ }

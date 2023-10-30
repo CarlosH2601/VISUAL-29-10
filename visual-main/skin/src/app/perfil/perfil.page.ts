@@ -8,8 +8,10 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./perfil.page.scss'],
 })
 export class PerfilPage implements OnInit {
-
-  constructor(public alertContrller: AlertController, public router: Router) { }
+  
+  constructor(public alertContrller: AlertController, public router: Router) { 
+    
+  }
 
   ngOnInit() {
   }
